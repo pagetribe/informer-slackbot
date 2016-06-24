@@ -1,0 +1,19 @@
+{
+  "name": "informer-slackbot",
+  "version": "1.0.0",
+  "description": "Sends data updates to slack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pagetribe/informer-slackbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pagetribe/informer-slackbot/issues"
+  },
+  "homepage": "https://github.com/pagetribe/informer-slackbot#readme"
+}
