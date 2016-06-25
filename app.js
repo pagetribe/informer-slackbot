@@ -4,7 +4,6 @@ var app = express()
 var request = require('request')
 
 app.get('/', function (req, res) {
-  console.log(process.env.SLACK_INCOMING_WEB_HOOK_URL)
   res.send('Hello World')
 })
 
