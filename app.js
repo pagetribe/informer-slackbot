@@ -4,23 +4,41 @@ var app = express()
 var request = require('request')
 
 app.get('/', function (req, res) {
-  console.log(process.env.SLACK_WEB_HOOK_URL)
+  console.log(process.env.SLACK_INCOMING_WEB_HOOK_URL)
   res.send('Hello World')
 })
 
 app.get('/informer', function(req, res) {
   res.send('Informer Bot')
-  sendMessageToSlack()
+  sendMessageToSlack(botPayload())
 })
 
 app.listen(3000, function() {
   console.log('Informer bot listening on port 3000!')
 })
 
-function sendMessageToSlack () {
+function sendMessageToSlack(payload) {
   request({
-    url: process.env.SLACK_WEB_HOOK_URL
+    url: process.env.SLACK_INCOMING_WEB_HOOK_URL,
+    method: 'POST',
+    json: payload,
+  }, function(error, response, body) {
+    if(error) {
+      console.log(error)
+    } else {
+      console.log(response.statusCode, body)
+    }
   })
+}
+
+function botPayload() {
+  var date = Date()
+  return {
+          "channel": "#my-test-channel ",
+          "username": "informer-bot",
+          "text": date.toString() + " This is test posted to #my-test-channel and comes from a bot named informer-bot express js.",
+          "icon_emoji": ":bar_chart:"
+  }
 }
 
 //Lets configure and request
