@@ -3,18 +3,33 @@ var express = require('express')
 var app = express()
 var request = require('request')
 
+var port = process.env.PORT || 3000;
+
 app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
-app.get('/informer', function(req, res) {
+app.get('/hello', isAuthenticated, function (req, res) {
+  res.send('Hello There')
+})
+
+
+app.get('/informer', isAuthenticated, function(req, res) {
   res.send('Informer Bot')
   sendMessageToSlack(botPayload())
 })
 
-app.listen(3000, function() {
-  console.log('Informer bot listening on port 3000!')
+app.listen(port, function() {
+  console.log('Informer bot listening on port port!')
 })
+
+
+function isAuthenticated(req, res, next) {
+  if (req.query.token == process.env.API_TOKEN) {
+    return next()
+  }
+  res.redirect('/') //if user is not logged in redirect them to home
+}
 
 function sendMessageToSlack(payload) {
   request({
