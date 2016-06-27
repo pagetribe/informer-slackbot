@@ -13,7 +13,7 @@ app.get('/hello', isAuthenticated, function (req, res) {
   res.send('Hello There')
 })
 
-
+// todo make a post to send tokens - security
 app.get('/informer', isAuthenticated, function(req, res) {
   res.send('Informer Bot')
   sendMessageToSlack(botPayload())
@@ -25,7 +25,7 @@ app.listen(port, function() {
 
 
 function isAuthenticated(req, res, next) {
-  if (req.query.token == process.env.API_TOKEN) {
+  if (process.env.API_TOKEN && req.query.token == process.env.API_TOKEN) {
     return next()
   }
   res.redirect('/') //if user is not logged in redirect them to home
