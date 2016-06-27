@@ -2,19 +2,27 @@ require('dotenv').config()
 var express = require('express')
 var app = express()
 var request = require('request')
-
+var bodyParser = require('body-parser');
 var port = process.env.PORT || 3000;
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 
 app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
-app.get('/hello', isAuthenticated, function (req, res) {
+app.get('/api/hello', isAuthenticated, function (req, res) {
   res.send('Hello There')
 })
 
+app.post('/api/hello', isAuthenticated, function (req, res) {
+  res.send('Hello There im post')
+})
+
 // todo make a post to send tokens - security
-app.get('/informer', isAuthenticated, function(req, res) {
+app.get('/api/informer', isAuthenticated, function(req, res) {
   res.send('Informer Bot')
   sendMessageToSlack(botPayload())
 })
@@ -25,9 +33,12 @@ app.listen(port, function() {
 
 
 function isAuthenticated(req, res, next) {
-  if (process.env.API_TOKEN && req.query.token == process.env.API_TOKEN) {
+  if (process.env.API_TOKEN && (req.body.token || req.query.token) == process.env.API_TOKEN) {
     return next()
   }
+  // if (process.env.API_TOKEN && req.query.token == process.env.API_TOKEN) {
+  //   return next()
+  // }
   res.redirect('/') //if user is not logged in redirect them to home
 }
 
