@@ -4,12 +4,15 @@ var app = express()
 var request = require('request')
 var bodyParser = require('body-parser');
 var port = process.env.PORT || 3000;
+var RateLimit = require('express-rate-limit');
+
+setupRateLimit(app)
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.get('/', function (req, res) {
-  res.send('Hello World')
+  res.send('Hello World.' + Date())
 })
 
 app.get('/api/hello', isAuthenticated, function (req, res) {
@@ -17,18 +20,16 @@ app.get('/api/hello', isAuthenticated, function (req, res) {
 })
 
 app.post('/api/hello', isAuthenticated, function (req, res) {
-  res.send('Hello There im post')
+  res.send('Hello There im post.')
 })
 
 app.post('/api/informer', isAuthenticated, function(req, res) {
-  res.send('Informer Bot')
-  sendMessageToSlack(botPayload())
+  sendMessageToSlack(botPayload(), function(){res.send('Informer Bot Message Successfully Sent')})
 })
 
 app.listen(port, function() {
   console.log('Informer bot listening on port port!')
 })
-
 
 function isAuthenticated(req, res, next) {
   var token = req.body.token || req.query.token //body for post, query for get
@@ -46,7 +47,7 @@ function tokenMatchesConfig(token) {
   }
 }
 
-function sendMessageToSlack(payload) {
+function sendMessageToSlack(payload, callback) {
   request({
     url: process.env.SLACK_INCOMING_WEB_HOOK_URL,
     method: 'POST',
@@ -56,6 +57,7 @@ function sendMessageToSlack(payload) {
       console.log(error)
     } else {
       console.log(response.statusCode, body)
+      callback()
     }
   })
 }
@@ -68,6 +70,16 @@ function botPayload() {
           "text": date.toString() + " This is test posted to #my-test-channel and comes from a bot named informer-bot express js.",
           "icon_emoji": ":bar_chart:"
   }
+}
+
+function setupRateLimit(app) {
+  app.enable('trust proxy') // only if you're behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc)
+  var limiter = new RateLimit({
+    windowMs: 15*60*1000, // 15 minutes
+    max: 20, // limit each IP to 10 requests per windowMs
+    delayMs: 0 // disable delaying - full speed until the max limit is reached
+  })
+  app.use(limiter)//  apply to all requests
 }
 
 //Lets configure and request
