@@ -1,4 +1,4 @@
-function isAuthenticated(req, res, next) {
+function authenticate(req, res, next) {
     var token = req.body.token || req.query.token //body for post, query for get
     if (tokenMatchesConfig(token)) {
       return next()
@@ -14,4 +14,4 @@ function tokenMatchesConfig(token) {
   }
 }
 
-module.exports.isAuthenticated = isAuthenticated
+module.exports.authenticate = authenticate

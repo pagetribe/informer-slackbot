@@ -6,18 +6,21 @@ var port = process.env.PORT || 3000
 var RateLimit = require('express-rate-limit')
 var testing = require('./routes/testing')
 var informer = require('./routes/informer')
+var mySimpleAuth = require('./my-simple-auth')
 
 setupRateLimit(app)
 
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
-app.use('/testing', testing)
-app.use('/informer/api', informer)
+app.use(bodyParser.json()) // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
 
 app.get('/', function (req, res) {
   res.send('Hello World.' + Date())
 })
+
+app.use(mySimpleAuth.authenticate)
+app.use('/testing', testing)
+app.use('/informer/api', informer)
+
 
 app.listen(port, function() {
   console.log('Informer bot listening on port port!')
@@ -32,3 +35,5 @@ function setupRateLimit(app) {
   })
   app.use(limiter)//  apply to all requests
 }
+
+
