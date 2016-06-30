@@ -1,5 +1,6 @@
 require('dotenv').config()
 var express = require('express')
+var helmet = require('helmet')
 var app = express()
 var bodyParser = require('body-parser')
 var port = process.env.PORT || 3000
@@ -8,8 +9,10 @@ var testing = require('./routes/testing')
 var informer = require('./routes/informer')
 var mySimpleAuth = require('./middlewares/my-simple-auth')
 
+
 setupRateLimit(app)
 
+app.use(helmet())
 app.use(bodyParser.json()) // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
 
