@@ -6,7 +6,7 @@ var port = process.env.PORT || 3000
 var RateLimit = require('express-rate-limit')
 var testing = require('./routes/testing')
 var informer = require('./routes/informer')
-var mySimpleAuth = require('./my-simple-auth')
+var mySimpleAuth = require('./middlewares/my-simple-auth')
 
 setupRateLimit(app)
 
