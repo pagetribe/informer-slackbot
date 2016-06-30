@@ -3,6 +3,7 @@ function authenticate(req, res, next) {
     if (tokenMatchesConfig(token)) {
       return next()
     }
+    // res.status(403).send('Forbidden')
     res.redirect('/') //if user is not logged in redirect them to home
 }
 
