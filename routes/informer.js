@@ -9,7 +9,8 @@ var router = express.Router()
 
 router.post('/price_types', function(req, res, next) {
   var data = payload.data()
-  slackHelper.sendMessageToSlack(data, function(){res.send('Informer Bot Message Successfully Sent')})
+  // slackHelper.sendMessageToSlack(data, function(){res.send('Informer Bot Message Successfully Sent')})
+  res.send('Informer Bot commented out')
 })
 
 module.exports = router
