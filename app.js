@@ -3,7 +3,8 @@ var express = require('express')
 var helmet = require('helmet')
 var app = express()
 var bodyParser = require('body-parser')
-var port = process.env.PORT || 3000
+var port = process.env.OPENSHIFT_NODEJS_PORT || 3000
+var serverIp = process.env.OPENSHIFT_NODEJS_IP || 'localhost'
 var RateLimit = require('express-rate-limit')
 var testing = require('./routes/testing')
 var informer = require('./routes/informer')
@@ -25,7 +26,7 @@ app.use('/testing', testing)
 app.use('/informer/api', informer)
 
 
-app.listen(port, function() {
+app.listen(port, serverIp, function() {
   console.log('Informer bot listening on port port!')
 })
 
