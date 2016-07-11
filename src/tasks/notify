@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+var slackHelper = require('../../send_slack_message')
+var payload = require('../../payload')
+
+var data = payload.data()
+console.log(Date())
+// slackHelper.sendMessageToSlack(data, function(){console.log('Informer Bot Message Successfully Sent')})
