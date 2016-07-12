@@ -1,8 +1,16 @@
 #!/usr/bin/env node
 
+var fs = require("fs")
 var slackHelper = require('../../send_slack_message')
 var payload = require('../../payload')
-
 var data = payload.data()
+
+fs.writeFile('${OPENSHIFT_LOG_DIR}/mynotify.log', Date(),  function(err) {
+   if (err) {
+       return console.error(err)
+   }
+   console.log("Data written to log successfully!")
+})
+
 console.log(Date())
 // slackHelper.sendMessageToSlack(data, function(){console.log('Informer Bot Message Successfully Sent')})

@@ -1,2 +1,5 @@
 #!/bin/bash
-date >> ${OPENSHIFT_LOG_DIR}/logoutstuff.log
+
+node ../../../src/tasks/notify
+
+# date >> ${OPENSHIFT_LOG_DIR}/logoutstuff.log
