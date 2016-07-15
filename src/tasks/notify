@@ -5,7 +5,7 @@ var slackHelper = require('../../send_slack_message')
 var payload = require('../../payload')
 var data = payload.data()
 
-fs.writeFile('${OPENSHIFT_LOG_DIR}/mynotify.log', Date(),  function(err) {
+fs.writeFile(process.env.OPENSHIFT_LOG_DIR + '/mynotify.log', Date(),  function(err) {
    if (err) {
        return console.error(err)
    }
