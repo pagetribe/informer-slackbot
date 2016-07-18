@@ -6,7 +6,7 @@ router.post('/gmt', function(req, res, next) {
 
   //check if the token matches the one sent from slack
   if (!payload || payload.token !== process.env.GMT_COMMAND_TOKEN) {
-    let err = 'An invalid slash token was provided\n' +
+    var err = 'An invalid slash token was provided\n' +
               'Is your Slack slash token correctly configured?'
     console.log(err)
     res.status(401).end(err)
