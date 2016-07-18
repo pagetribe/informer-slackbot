@@ -7,6 +7,7 @@ var port = process.env.PORT || 3000
 var RateLimit = require('express-rate-limit')
 var testing = require('./routes/testing')
 var informer = require('./routes/informer')
+var commands = require('./routes/commands')
 var mySimpleAuth = require('./middlewares/my-simple-auth')
 
 
@@ -20,6 +21,7 @@ app.get('/', function (req, res) {
   res.send('Hello World.' + Date())
 })
 
+app.use('/commands', commands) // does not need auth as slack sends it own token and this is checked in the commands route file
 app.use(mySimpleAuth.authenticate)
 app.use('/testing', testing)
 app.use('/informer/api', informer)
