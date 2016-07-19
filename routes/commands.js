@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+var request = require('request')
 
 router.post('/gmt', function(req, res, next) {
   var payload = req.body
@@ -13,13 +14,33 @@ router.post('/gmt', function(req, res, next) {
     return
   }
   else {
-    var body = {
-      response_type: "ephemeral",
-      text: Date()
-    }
+    sendMessageToSlack(payload, callback) //need this for when it heroku sleeps
+    // var body = {
+    //   response_type: "ephemeral",
+    //   text: Date()
+    // }
 
-    res.send(body)
+    // res.send(body)
   }
 })
+
+function sendMessageToSlack(payload, callback) {
+  var body = {
+    response_type: "ephemeral",
+    text: Date()
+  }
+
+  request({
+    url: payload.response_url,
+    method: 'POST',
+    json: body,
+  }, function(error, response, body) {
+    if(error) {
+      console.log(error)
+    } else if(response.statusCode == 200) {
+      callback()
+    }
+  })
+}
 
 module.exports = router
