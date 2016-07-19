@@ -13,37 +13,33 @@ router.post('/gmt', function(req, res, next) {
     return
   }
   else {
-    var body = {
-      response_type: "ephemeral",
-      text: Date()
-    }
-
-    res.send(body)
-
-    // sendMessageToSlack(payload, function(error, response) {
-    //   if(error) {
-    //     console.log(error)
-    //     res.sendStatus(500)
-    //   } else if(response.statusCode === 200) {
-    //     console.log('200 OK')
-    //     res.sendStatus(200)
-    //   }
-    // })
+    // var body = {
+    //   response_type: "ephemeral",
+    //   text: Date()
+    // }
+    // res.send(body)
+    sendMessageToSlack(payload, function(error, response) {
+      if(error) {
+        res.sendStatus(500)
+      } else if(response.statusCode === 200) {
+        res.sendStatus(200)
+      }
+    })
 
   }
 })
 
-// function sendMessageToSlack(payload, done) {
-//   var body = {
-//     response_type: "ephemeral",
-//     text: Date()
-//   }
+function sendMessageToSlack(payload, done) {
+  var body = {
+    response_type: "ephemeral",
+    text: Date()
+  }
 
-//   request({
-//     url: payload.response_url,
-//     method: 'POST',
-//     json: body,
-//   }, done)
-// }
+  request({
+    url: payload.response_url,
+    method: 'POST',
+    json: body,
+  }, done)
+}
 
 module.exports = router
