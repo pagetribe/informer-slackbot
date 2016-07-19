@@ -1,17 +1,17 @@
 function authenticate(req, res, next) {
-    var token = req.body.token || req.query.token //body for post, query for get
-    if (tokenMatchesConfig(token)) {
+
+    var apiToken = req.body.api_token || req.query.api_token //body for post, query for get
+    if (tokenMatchesConfig(apiToken)) {
       return next()
     }
-    // res.status(403).send('Forbidden')
-    res.redirect('/') //if user is not logged in redirect them to home
+    res.status(403).send('Forbidden')
 }
 
-function tokenMatchesConfig(token) {
+function tokenMatchesConfig(apiToken) {
   if (!process.env.API_TOKEN) {
     return false
   } else {
-    return token == process.env.API_TOKEN
+    return apiToken === process.env.API_TOKEN
   }
 }
 
