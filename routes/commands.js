@@ -15,6 +15,7 @@ router.post('/gmt', function(req, res, next) {
   }
   else {
     sendMessageToSlack(payload) //need this for when it heroku sleeps
+    res.sendStatus(200)
     // var body = {
     //   response_type: "ephemeral",
     //   text: Date()
