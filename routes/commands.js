@@ -18,7 +18,7 @@ router.post('/gmt', function(req, res, next) {
     //   text: Date()
     // }
     // res.send(body)
-    sendMessageToSlack(payload, function(error, response) {
+    sendMessageToSlack(slackData, function(error, response) {
       if(error) {
         res.sendStatus(500)
       } else if(response.statusCode === 200) {
@@ -29,14 +29,14 @@ router.post('/gmt', function(req, res, next) {
   }
 })
 
-function sendMessageToSlack(payload, done) {
+function sendMessageToSlack(slackData, done) {
   var body = {
     response_type: "ephemeral",
     text: Date()
   }
 
   request({
-    url: payload.response_url,
+    url: slackData.response_url,
     method: 'POST',
     json: body,
   }, done)
