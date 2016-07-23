@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var request = require('request')
+var moment = require('moment-timezone')
 
 router.post('/gmt', function(req, res, next) {
   var slackData = req.body
@@ -13,11 +14,6 @@ router.post('/gmt', function(req, res, next) {
     return
   }
   else {
-    // var body = {
-    //   response_type: "ephemeral",
-    //   text: Date()
-    // }
-    // res.send(body)
     sendMessageToSlack(slackData, function(error, response) {
       if(error) {
         res.sendStatus(500)
@@ -29,17 +25,41 @@ router.post('/gmt', function(req, res, next) {
   }
 })
 
-function sendMessageToSlack(slackData, done) {
-  var body = {
-    response_type: "ephemeral",
-    text: Date()
-  }
-
+function sendMessageToSlack(slackData, callback) {
   request({
     url: slackData.response_url,
     method: 'POST',
-    json: body,
-  }, done)
+    json: payload(slackData),
+  }, callback)
+}
+
+
+function payload(slackData) {
+  var text = Date() //default to date
+  var dateToConvert = slackData.text
+
+  if(dateToConvert) {
+    text = getGMTDate(dateToConvert)
+  }
+
+  var body = {
+    response_type: "ephemeral",
+    text: text
+  }
+
+  return body
+}
+
+function getGMTDate(dateToConvert) {
+  // TODO: pass in text eg manila to convert to manila time
+  // console.log(moment.tz('2016-07-20 22:35:01', "Asia/Manila").toDate() + ' manila')
+
+  if(moment(data.text).isValid()) {
+    return moment.tz(dateToConvert, "Australia/Sydney").toDate()
+  }
+  else {
+    return 'data must be a valid format e.g., 2016-07-20 22:35:01'
+  }
 }
 
 module.exports = router
