@@ -11,7 +11,7 @@ var commands = require('./routes/commands')
 var mySimpleAuth = require('./middlewares/my-simple-auth')
 
 
-setupRateLimit(app)
+// setupRateLimit(app)
 
 app.use(helmet())
 app.use(bodyParser.json()) // support json encoded bodies
