@@ -2,27 +2,49 @@ var fs = require("fs")
 
 var fileSource = './log/usage.log';
 var data
+var name = ''
 
-function getData(callback) {
+// seedDataFile()
+
+function updateUsageStats(userName) {
+  name = userName
+  getFileData(logUsageForUser)
+}
+
+function logUsageForUser(err, fileData) {
+  user = fileData.users.find(byName(name))
+
+  if (typeof user === 'undefined') {
+    createNewUser(fileData)
+  }
+  else {
+    user.count++
+  }
+  data = fileData
+  writeData()
+}
+
+function byName(name) {
+  return function(element) {
+      if (element.name === name) {
+        return element
+      }
+    }
+}
+
+function createNewUser(data) {
+  data.users.push({name: name, count: 1})
+}
+
+function getFileData(callback) {
   fs.readFile(fileSource, "utf8", function(err, data){
     if ( err ){ throw err;}
     console.log("Reading file asynchronously");
-    data = data
-    callback(null, data)
+    callback(null, JSON.parse(data))
   });
 }
 
-getData(updateData)
-
-function updateData(err, data) {
-  console.log(JSON.parse(data))
-  jsonData = JSON.parse(data)
-  jsonData.users.push({name: 'tim', count: 1})
-  writeData(jsonData)
-  console.log(jsonData)
-}
-
-function writeData(data) {
+function writeData() {
   fs.writeFile(fileSource, JSON.stringify(data), function(err) {
      if (err) {
          return console.error(err)
@@ -32,6 +54,9 @@ function writeData(data) {
   })
 }
 
+module.exports.updateUsageStats = updateUsageStats
+
+// updateUsageStats('bob')
 
 // function seedDataFile() {
 //   var data = {}
@@ -46,28 +71,8 @@ function writeData(data) {
 //      console.log("Data written to log successfully!")
 //   })
 // }
-// seedDataFile()
 
 
-// function logUsageForUser(name) {
-//   user = usage.users.find(byName(name))
-//   if (typeof user !== 'undefined') {
-//     user.count ++
-//   }
-//   else {
-//     createNewUser(name)
-//   }
-// }
 
-// function createNewUser(name) {
-//   usage.users.push({name: name, count: 1})
-// }
 
-// function byName(name) {
-//   return function(element) {
-//       if (element.name === name) {
-//         return element
-//       }
-//     }
-// }
 
