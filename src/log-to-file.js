@@ -1,10 +1,10 @@
 var fs = require("fs")
 
-var fileSource = './log/usage.log';
+var fileSource = './usage.log';
 var data
 var name = ''
 
-// seedDataFile()
+seedDataFile()
 
 function updateUsageStats(userName) {
   name = userName
@@ -58,19 +58,19 @@ module.exports.updateUsageStats = updateUsageStats
 
 // updateUsageStats('bob')
 
-// function seedDataFile() {
-//   var data = {}
-//   data.users = []
+function seedDataFile() {
+  var data = {}
+  data.users = []
 
-//   data.users.push({name: 'mark', count: 1})
-//   fs.writeFile(fileSource, JSON.stringify(data), function(err) {
-//      if (err) {
-//          return console.error(err)
-//      }
-//      console.log(data)
-//      console.log("Data written to log successfully!")
-//   })
-// }
+  data.users.push({name: 'mark', count: 1})
+  fs.writeFile(fileSource, JSON.stringify(data), function(err) {
+     if (err) {
+         return console.error(err)
+     }
+     console.log(data)
+     console.log("Data written to log successfully!")
+  })
+}
 
 
 
