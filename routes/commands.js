@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 var request = require('request')
 var moment = require('moment-timezone')
-var usageLog = require('./src/log-to-file')
+// var usageLog = require('./src/log-to-file')
 
 router.post('/gmt', function(req, res, next) {
   var slackData = req.body
@@ -15,7 +15,7 @@ router.post('/gmt', function(req, res, next) {
     return
   }
   else {
-    usageLog.updateUsageStats(slackData.user_name)
+    // usageLog.updateUsageStats(slackData.user_name)
 
     sendMessageToSlack(slackData, function(error, response) {
       if(error) {
