@@ -4,7 +4,7 @@ var fileSource = './usage.log';
 var data
 var name = ''
 
-seedDataFile()
+// seedDataFile()
 
 function updateUsageStats(userName) {
   name = userName
