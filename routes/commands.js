@@ -57,7 +57,8 @@ function getGMTDate(dateToConvert) {
   // console.log(moment.tz('2016-07-20 22:35:01', "Asia/Manila").toDate() + ' manila')
 
   if(moment(dateToConvert).isValid()) {
-    return moment.tz(dateToConvert, "Australia/Sydney").toString()
+    var gmt = moment.tz(dateToConvert, "GMT")
+    return gmt.tz(dateToConvert, "Australia/Sydney").format('LLL')
   }
   else {
     return 'data must be a valid format e.g., 2016-07-20 22:35:01'
