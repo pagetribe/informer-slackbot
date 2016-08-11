@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-date >> ${OPENSHIFT_LOG_DIR}/logoutstuff.log
+date >> $OPENSHIFT_LOG_DIR/logoutstuff.log
 
 node $OPENSHIFT_REPO_DIR/src/tasks/notify
 
